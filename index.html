@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saya e Haq - Art Gallery</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="brand-name">Saya e Haq</div>
+        <div class="top-right-nav">
+            <button class="menu-button" id="menuButton"><i class="fas fa-bars"></i></button>
+            <div class="cart-icon" id="cartIcon">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="cart-count">0</span>
+            </div>
+        </div>
+    </header>
+
+    <nav class="sidebar-menu" id="sidebarMenu">
+        <ul>
+            <li><a href="#" data-filter="under500">Paintings Under $500</a></li>
+            <li><a href="#" data-filter="under750">Paintings Under $750</a></li>
+            <li><a href="#" data-filter="classic">Classic Paintings</a></li>
+            <li><a href="#" data-filter="modern">Modern Paintings</a></li>
+        </ul>
+    </nav>
+
+    <div class="hero-section">
+        <h1>Saya e Haq</h1>
+        <p>Where Art Finds Its Soul</p>
+    </div>
+
+    <main>
+        <section class="category-blocks">
+            <div class="category-block" data-category="classic">
+                <h2>Classic Paintings</h2>
+                <p>Timeless beauty, enduring elegance.</p>
+            </div>
+            <div class="category-block" data-category="modern">
+                <h2>Modern Paintings</h2>
+                <p>Bold strokes, contemporary visions.</p>
+            </div>
+        </section>
+
+        <section class="product-listing" id="productListing">
+            <!-- Products will be dynamically loaded here -->
+        </section>
+
+        <!-- Product Detail Modal -->
+        <div id="productModal" class="modal">
+            <div class="modal-content">
+                <span class="close-button">&times;</span>
+                <img id="modalImage" src="" alt="Product Image">
+                <h3 id="modalTitle"></h3>
+                <p id="modalDescription"></p>
+                <p class="modal-price" id="modalPrice"></p>
+                <button class="add-to-cart-button" id="modalAddToCart">Add to Cart</button>
+            </div>
+        </div>
+
+        <!-- Cart Modal -->
+        <div id="cartModal" class="modal">
+            <div class="modal-content">
+                <span class="close-button">&times;</span>
+                <h2>Your Cart</h2>
+                <div id="cartItems">
+                    <!-- Cart items will be displayed here -->
+                </div>
+                <div class="cart-total">
+                    Total: <span id="cartTotal">$0.00</span>
+                </div>
+                <button class="checkout-button" id="checkoutButton">Proceed to Checkout</button>
+            </div>
+        </div>
+
+        <!-- Checkout Modal -->
+        <div id="checkoutModal" class="modal">
+            <div class="modal-content">
+                <span class="close-button">&times;</span>
+                <h2>Checkout</h2>
+                <form id="checkoutForm">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" required>
+
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+
+                    <label for="phone">Phone Number:</label>
+                    <input type="tel" id="phone" name="phone">
+
+                    <label for="address">Shipping Address:</label>
+                    <textarea id="address" name="address" rows="4" required></textarea>
+
+                    <button type="submit" class="place-order-button">Place Order</button>
+                </form>
+            </div>
+        </div>
+
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <h3>Saya e Haq Art Gallery</h3>
+            <p>Email: info@sayaehaq.com</p>
+            <p>Phone: +123 456 7890</p>
+            <p>Address: 123 Art Lane, Creative City, World</p>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
