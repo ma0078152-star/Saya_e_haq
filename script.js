@@ -1,247 +1,269 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // --- Elements ---
     const menuButton = document.getElementById('menuButton');
     const sidebarMenu = document.getElementById('sidebarMenu');
     const cartIcon = document.getElementById('cartIcon');
     const cartCount = document.querySelector('.cart-count');
     const productListing = document.getElementById('productListing');
-    
+    const categoryBlocks = document.querySelectorAll('.category-block');
+    const sidebarLinks = document.querySelectorAll('.sidebar-menu a');
+
     // Modals
     const productModal = document.getElementById('productModal');
     const cartModal = document.getElementById('cartModal');
     const checkoutModal = document.getElementById('checkoutModal');
 
-    // Modal close buttons
-    document.querySelectorAll('.close-button').forEach(button => {
-        button.addEventListener('click', () => {
-            productModal.style.display = 'none';
-            cartModal.style.display = 'none';
-            checkoutModal.style.display = 'none';
-        });
-    });
+    // Close buttons for modals
+    const closeButtons = document.querySelectorAll('.modal .close-button');
 
-    // Close modal if clicking outside
-    window.addEventListener('click', (event) => {
-        if (event.target == productModal) productModal.style.display = 'none';
-        if (event.target == cartModal) cartModal.style.display = 'none';
-        if (event.target == checkoutModal) checkoutModal.style.display = 'none';
-    });
+    // Modal specific buttons
+    const modalAddToCartButton = document.getElementById('modalAddToCart');
+    const checkoutButton = document.getElementById('checkoutButton');
+    const checkoutForm = document.getElementById('checkoutForm');
 
-    // Dummy product data
+
+    // --- Data (Example Products) ---
     const products = [
-        {
-            id: 'p1',
-            name: 'Serene Sunset',
-            category: 'classic',
-            price: 450.00,
-            image: 'https://via.placeholder.com/400x300/A2D2FF/000000?text=Serene+Sunset',
-            description: 'A classic oil painting depicting a peaceful sunset over a tranquil lake. Rich colors and smooth brushstrokes capture the essence of natural beauty.',
-            priceRange: 'under500'
-        },
-        {
-            id: 'p2',
-            name: 'Abstract Cityscape',
-            category: 'modern',
-            price: 680.00,
-            image: 'https://via.placeholder.com/400x300/FFC7A2/000000?text=Abstract+Cityscape',
-            description: 'A vibrant modern acrylic painting, abstractly representing a bustling city at night with bold lines and contrasting hues.',
-            priceRange: 'under750'
-        },
-        {
-            id: 'p3',
-            name: 'Rustic Farmhouse',
-            category: 'classic',
-            price: 720.00,
-            image: 'https://via.placeholder.com/400x300/B8E986/000000?text=Rustic+Farmhouse',
-            description: 'Detailed watercolor of an old rustic farmhouse, showcasing intricate details and warm, inviting tones.',
-            priceRange: 'under750'
-        },
-        {
-            id: 'p4',
-            name: 'Geometric Fusion',
-            category: 'modern',
-            price: 320.00,
-            image: 'https://via.placeholder.com/400x300/E3DDF4/000000?text=Geometric+Fusion',
-            description: 'A minimalist modern piece utilizing sharp geometric shapes and a limited color palette to create a sense of balance and rhythm.',
-            priceRange: 'under500'
-        },
-        {
-            id: 'p5',
-            name: 'Mountain Vista',
-            category: 'classic',
-            price: 580.00,
-            image: 'https://via.placeholder.com/400x300/D4F1F4/000000?text=Mountain+Vista',
-            description: 'A grand landscape painting capturing the majestic view of snow-capped mountains under a clear blue sky.',
-            priceRange: 'under750'
-        },
-        {
-            id: 'p6',
-            name: 'Pop Art Portrait',
-            category: 'modern',
-            price: 490.00,
-            image: 'https://via.placeholder.com/400x300/FFDD65/000000?text=Pop+Art+Portrait',
-            description: 'A striking pop art portrait with bold outlines and bright, contrasting colors, inspired by iconic comic book styles.',
-            priceRange: 'under500'
-        }
+        { id: 1, name: 'Golden Abstract', description: 'A vibrant abstract piece with splashes of gold.', price: 450, imageUrl: 'https://via.placeholder.com/400x300/FFD700/000000?text=Golden+Abstract', category: 'modern', priceCategory: 'under500' },
+        { id: 2, name: 'Classic Portrait', description: 'Oil painting of a noble figure from the 18th century.', price: 680, imageUrl: 'https://via.placeholder.com/400x300/6A5ACD/FFFFFF?text=Classic+Portrait', category: 'classic', priceCategory: 'under750' },
+        { id: 3, name: 'Modern Landscape', description: 'Contemporary landscape with bold colors and textures.', price: 520, imageUrl: 'https://via.placeholder.com/400x300/ADD8E6/000000?text=Modern+Landscape', category: 'modern', priceCategory: 'under750' },
+        { id: 4, name: 'Baroque Still Life', description: 'Detailed still life reminiscent of the Baroque era.', price: 900, imageUrl: 'https://via.placeholder.com/400x300/CD853F/FFFFFF?text=Baroque+Still+Life', category: 'classic' },
+        { id: 5, name: 'Minimalist Gold Lines', description: 'Simple yet striking design with gold lines on a dark canvas.', price: 300, imageUrl: 'https://via.placeholder.com/400x300/B8860B/000000?text=Minimalist+Gold', category: 'modern', priceCategory: 'under500' }
+        // Add more products with various categories and prices
     ];
 
-    let cart = JSON.parse(localStorage.getItem('sayaEhaqCart')) || [];
+    let cart = []; // Array to hold cart items
 
-    // Function to render products
+    // --- Functions ---
+
+    // Toggle Sidebar
+    function toggleSidebar() {
+        sidebarMenu.classList.toggle('active');
+    }
+
+    // Show Modal
+    function showModal(modalElement) {
+        modalElement.classList.add('active');
+        document.body.style.overflow = 'hidden'; // Prevent scrolling background
+    }
+
+    // Hide Modal
+    function hideModal(modalElement) {
+        modalElement.classList.remove('active');
+        document.body.style.overflow = ''; // Restore scrolling
+    }
+
+    // Render Product Cards
     function renderProducts(filteredProducts = products) {
-        productListing.innerHTML = ''; // Clear current products
+        productListing.innerHTML = ''; // Clear existing products
         filteredProducts.forEach(product => {
             const productCard = document.createElement('div');
-            productCard.className = 'product-card';
+            productCard.classList.add('product-card');
             productCard.innerHTML = `
-                <img src="${product.image}" alt="${product.name}">
+                <img src="${product.imageUrl}" alt="${product.name}">
                 <div class="product-info">
                     <h3>${product.name}</h3>
+                    <p>${product.description}</p>
                     <p class="product-price">$${product.price.toFixed(2)}</p>
-                    <div class="product-actions">
-                        <button class="action-button view-button" data-id="${product.id}">View</button>
-                        <button class="action-button cart-add-button" data-id="${product.id}">Add to Cart</button>
-                    </div>
+                    <button class="add-to-cart-button" data-product-id="${product.id}">Add to Cart</button>
                 </div>
             `;
             productListing.appendChild(productCard);
-        });
-        attachProductCardListeners();
-    }
 
-    // Function to attach listeners to dynamically created product cards
-    function attachProductCardListeners() {
-        document.querySelectorAll('.view-button').forEach(button => {
-            button.addEventListener('click', (e) => {
-                const productId = e.target.dataset.id;
-                const product = products.find(p => p.id === productId);
-                if (product) {
-                    document.getElementById('modalImage').src = product.image;
-                    document.getElementById('modalTitle').textContent = product.name;
-                    document.getElementById('modalDescription').textContent = product.description;
-                    document.getElementById('modalPrice').textContent = `$${product.price.toFixed(2)}`;
-                    document.getElementById('modalAddToCart').dataset.id = product.id; // Set ID for adding to cart
-                    productModal.style.display = 'flex';
-                }
-            });
-        });
+            // Add click listener to show product detail modal
+            productCard.querySelector('img').addEventListener('click', () => showProductDetail(product));
+            productCard.querySelector('h3').addEventListener('click', () => showProductDetail(product));
+            productCard.querySelector('p').addEventListener('click', () => showProductDetail(product));
 
-        document.querySelectorAll('.cart-add-button').forEach(button => {
-            button.addEventListener('click', (e) => {
-                const productId = e.target.dataset.id;
-                addToCart(productId);
+            // Add to cart button directly on card (can remove if only using modal button)
+            productCard.querySelector('.add-to-cart-button').addEventListener('click', (event) => {
+                event.stopPropagation(); // Prevent modal from opening
+                addToCart(product);
             });
         });
     }
 
-    // Update cart count display
-    function updateCartCount() {
-        cartCount.textContent = cart.reduce((total, item) => total + item.quantity, 0);
-        localStorage.setItem('sayaEhaqCart', JSON.stringify(cart));
+    // Show Product Detail Modal
+    function showProductDetail(product) {
+        document.getElementById('modalImage').src = product.imageUrl;
+        document.getElementById('modalTitle').textContent = product.name;
+        document.getElementById('modalDescription').textContent = product.description;
+        document.getElementById('modalPrice').textContent = `$${product.price.toFixed(2)}`;
+        modalAddToCartButton.dataset.productId = product.id; // Store product ID
+        showModal(productModal);
     }
 
-    // Add to cart functionality
-    function addToCart(productId) {
-        const product = products.find(p => p.id === productId);
-        if (product) {
-            const existingItem = cart.find(item => item.id === productId);
-            if (existingItem) {
-                existingItem.quantity++;
-            } else {
-                cart.push({ ...product, quantity: 1 });
-            }
-            updateCartCount();
-            alert(`${product.name} added to cart!`);
+    // Add to Cart
+    function addToCart(productToAdd) {
+        const existingItem = cart.find(item => item.id === productToAdd.id);
+        if (existingItem) {
+            existingItem.quantity++;
+        } else {
+            cart.push({ ...productToAdd, quantity: 1 });
         }
+        updateCartDisplay();
+        hideModal(productModal); // Hide product detail modal after adding
     }
 
-    // Render cart items in cart modal
-    function renderCartItems() {
+    // Update Cart Display
+    function updateCartDisplay() {
         const cartItemsContainer = document.getElementById('cartItems');
-        const cartTotalSpan = document.getElementById('cartTotal');
         cartItemsContainer.innerHTML = '';
         let total = 0;
 
         if (cart.length === 0) {
-            cartItemsContainer.innerHTML = '<p>Your cart is empty.</p>';
+            cartItemsContainer.innerHTML = '<p style="text-align: center; color: #E0B973;">Your cart is empty.</p>';
         } else {
             cart.forEach(item => {
-                const itemElement = document.createElement('div');
-                itemElement.className = 'cart-item';
-                itemElement.innerHTML = `
-                    <img src="${item.image}" alt="${item.name}">
-                    <div class="cart-item-details">
+                const itemTotal = item.price * item.quantity;
+                total += itemTotal;
+                const cartItemDiv = document.createElement('div');
+                cartItemDiv.classList.add('cart-item');
+                cartItemDiv.innerHTML = `
+                    <div class="cart-item-info">
                         <h4>${item.name}</h4>
                         <p>$${item.price.toFixed(2)} x ${item.quantity}</p>
                     </div>
                     <div class="cart-item-actions">
-                        <button class="remove-from-cart" data-id="${item.id}">Remove</button>
+                        <button data-id="${item.id}" data-action="decrease">-</button>
+                        <span>${item.quantity}</span>
+                        <button data-id="${item.id}" data-action="increase">+</button>
+                        <button data-id="${item.id}" data-action="remove">Remove</button>
                     </div>
                 `;
-                cartItemsContainer.appendChild(itemElement);
-                total += item.price * item.quantity;
+                cartItemsContainer.appendChild(cartItemDiv);
             });
         }
-        cartTotalSpan.textContent = `$${total.toFixed(2)}`;
-        attachCartItemListeners();
-    }
 
-    // Attach listeners to cart item buttons (e.g., remove)
-    function attachCartItemListeners() {
-        document.querySelectorAll('.remove-from-cart').forEach(button => {
-            button.addEventListener('click', (e) => {
-                const productId = e.target.dataset.id;
-                removeFromCart(productId);
+        document.getElementById('cartTotal').textContent = `$${total.toFixed(2)}`;
+        cartCount.textContent = cart.reduce((sum, item) => sum + item.quantity, 0);
+
+        // Add event listeners for cart item actions
+        cartItemsContainer.querySelectorAll('.cart-item-actions button').forEach(button => {
+            button.addEventListener('click', (event) => {
+                const id = parseInt(event.target.dataset.id);
+                const action = event.target.dataset.action;
+                updateCartItemQuantity(id, action);
             });
         });
     }
 
-    // Remove from cart functionality
-    function removeFromCart(productId) {
-        cart = cart.filter(item => item.id !== productId);
-        updateCartCount();
-        renderCartItems(); // Re-render cart
+    // Update Cart Item Quantity
+    function updateCartItemQuantity(id, action) {
+        const itemIndex = cart.findIndex(item => item.id === id);
+        if (itemIndex > -1) {
+            if (action === 'increase') {
+                cart[itemIndex].quantity++;
+            } else if (action === 'decrease') {
+                cart[itemIndex].quantity--;
+                if (cart[itemIndex].quantity <= 0) {
+                    cart.splice(itemIndex, 1); // Remove if quantity drops to 0 or less
+                }
+            } else if (action === 'remove') {
+                cart.splice(itemIndex, 1);
+            }
+        }
+        updateCartDisplay();
     }
 
-    // Event Listeners
-    menuButton.addEventListener('click', () => {
-        sidebarMenu.classList.toggle('active');
-    });
 
-    cartIcon.addEventListener('click', () => {
-        renderCartItems();
-        cartModal.style.display = 'flex';
-    });
-
-    document.getElementById('modalAddToCart').addEventListener('click', (e) => {
-        const productId = e.target.dataset.id;
-        addToCart(productId);
-        productModal.style.display = 'none'; // Close product detail modal
-    });
-
-    document.getElementById('checkoutButton').addEventListener('click', () => {
-        if (cart.length === 0) {
-            alert('Your cart is empty. Please add items before checking out.');
-            return;
+    // Filter Products
+    function filterProducts(filterType, value) {
+        let filtered = products;
+        if (filterType === 'category') {
+            filtered = products.filter(p => p.category === value);
+        } else if (filterType === 'priceCategory') {
+            if (value === 'under500') {
+                filtered = products.filter(p => p.price < 500);
+            } else if (value === 'under750') {
+                filtered = products.filter(p => p.price < 750);
+            }
         }
-        cartModal.style.display = 'none';
-        checkoutModal.style.display = 'flex';
+        renderProducts(filtered);
+        hideModal(sidebarMenu); // Close sidebar after selection
+    }
+
+    // --- Event Listeners ---
+
+    // Menu button to toggle sidebar
+    menuButton.addEventListener('click', toggleSidebar);
+
+    // Cart icon to open cart modal
+    cartIcon.addEventListener('click', () => {
+        updateCartDisplay(); // Ensure cart is updated before showing
+        showModal(cartModal);
     });
 
-    document.getElementById('checkoutForm').addEventListener('submit', (e) => {
-        e.preventDefault();
-        // Here you would typically send the order data to a server
-        const formData = new FormData(e.target);
-        const orderDetails = Object.fromEntries(formData.entries());
-        orderDetails.items = cart;
-        orderDetails.total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0).toFixed(2);
+    // Close buttons for all modals
+    closeButtons.forEach(button => {
+        button.addEventListener('click', (event) => {
+            // Find the parent modal and hide it
+            const modal = event.target.closest('.modal');
+            if (modal) {
+                hideModal(modal);
+            }
+        });
+    });
 
-        console.log('Order Details:', orderDetails);
-        alert('Thank you for your order! Your order has been placed.');
+    // Close modals when clicking outside
+    window.addEventListener('click', (event) => {
+        if (event.target === productModal) {
+            hideModal(productModal);
+        } else if (event.target === cartModal) {
+            hideModal(cartModal);
+        } else if (event.target === checkoutModal) {
+            hideModal(checkoutModal);
+        }
+    });
 
-        // Clear cart and close modals
-        cart = [];
-        updateCartCount();
-        checkoutModal.style.display = 'none';
-        
-        // Optionally, redirect to a thank you page or show a success message
-        renderProducts(); // Re-render
+    // Add to Cart button in product detail modal
+    modalAddToCartButton.addEventListener('click', () => {
+        const productId = parseInt(modalAddToCartButton.dataset.productId);
+        const product = products.find(p => p.id === productId);
+        if (product) {
+            addToCart(product);
+        }
+    });
+
+    // Checkout button in cart modal
+    checkoutButton.addEventListener('click', () => {
+        hideModal(cartModal);
+        showModal(checkoutModal);
+    });
+
+    // Checkout Form submission
+    checkoutForm.addEventListener('submit', (event) => {
+        event.preventDefault(); // Prevent default form submission
+        alert('Order Placed! Thank you for your purchase.');
+        cart = []; // Clear cart
+        updateCartDisplay(); // Update cart UI
+        hideModal(checkoutModal);
+        // In a real application, you would send this data to a server
+        checkoutForm.reset(); // Clear form fields
+    });
+
+    // Category Block Click Handlers
+    categoryBlocks.forEach(block => {
+        block.addEventListener('click', () => {
+            const category = block.dataset.category;
+            filterProducts('category', category);
+        });
+    });
+
+    // Sidebar Link Click Handlers
+    sidebarLinks.forEach(link => {
+        link.addEventListener('click', (event) => {
+            event.preventDefault(); // Prevent default link behavior
+            const filter = event.target.dataset.filter;
+            if (filter === 'classic' || filter === 'modern') {
+                filterProducts('category', filter);
+            } else if (filter === 'under500' || filter === 'under750') {
+                filterProducts('priceCategory', filter);
+            }
+        });
+    });
+
+    // --- Initial Render ---
+    renderProducts(); // Load all products on page load
+    updateCartDisplay(); // Initialize cart count
+});
