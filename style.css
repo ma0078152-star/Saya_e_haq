@@ -4,18 +4,37 @@ body, html {
     padding: 0;
     font-family: 'Open Sans', sans-serif;
     line-height: 1.6;
-    color: #E0B973; /* Muted Gold for general text */
+    color: #F0E68C; /* Changed to an elegant White Gold for general text */
     background-color: #1a1a1a; /* Dark background */
     scroll-behavior: smooth;
     min-height: 100vh; /* Ensure body takes full height */
     display: flex;
     flex-direction: column;
+
+    /* Added background image for art gallery feel */
+    background-image: url('https://images.unsplash.com/photo-1549887552-cb1071f4b55c?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'); /* Placeholder - replace with a suitable art gallery image URL */
+    background-size: cover;
+    background-attachment: fixed; /* Makes the background scroll with content */
+    background-position: center center;
+    position: relative; /* Needed for pseudo-element overlay */
+}
+
+/* Overlay for the background image to keep text readable */
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.75); /* Darker overlay to ensure text readability */
+    z-index: -1; /* Place behind content */
 }
 
 /* Header Styling */
 header {
     background-color: #000; /* Pure black header */
-    color: #E0B973; /* Gold for header text */
+    color: #D4AF37; /* Elegant Gold for header text */
     padding: 15px 30px;
     display: flex;
     justify-content: space-between;
@@ -30,7 +49,7 @@ header {
     font-family: 'Playfair Display', serif;
     font-size: 1.8em;
     font-weight: 700;
-    color: #FFD700; /* Brighter gold for brand */
+    color: #F0E68C; /* Brighter elegant gold for brand */
     letter-spacing: 1px;
 }
 
@@ -42,7 +61,7 @@ header {
 .menu-button, .cart-icon {
     background: none;
     border: none;
-    color: #E0B973;
+    color: #D4AF37; /* Elegant Gold */
     font-size: 1.5em;
     cursor: pointer;
     margin-left: 20px;
@@ -50,7 +69,7 @@ header {
 }
 
 .menu-button:hover, .cart-icon:hover {
-    color: #FFD700;
+    color: #F0E68C; /* Brighter elegant gold on hover */
 }
 
 .cart-icon {
@@ -60,7 +79,7 @@ header {
 }
 
 .cart-count {
-    background-color: #FFD700; /* Gold badge */
+    background-color: #F0E68C; /* Brighter elegant gold badge */
     color: #000; /* Black text on badge */
     border-radius: 50%;
     padding: 2px 7px;
@@ -100,26 +119,27 @@ header {
     padding: 15px 25px;
     text-decoration: none;
     font-size: 1.2em;
-    color: #E0B973;
+    color: #D4AF37; /* Elegant Gold */
     display: block;
     transition: 0.3s;
 }
 
 .sidebar-menu ul li a:hover {
-    color: #FFD700;
+    color: #F0E68C; /* Brighter elegant gold on hover */
     background-color: #333; /* Darker grey on hover */
 }
 
 /* Hero Section */
 .hero-section {
-    background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1549887552-cb1071f4b55c?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') no-repeat center center/cover;
+    /* Removed redundant background image here since body has one, or keep if you want a different one for hero */
+    background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)); /* Only keep gradient overlay for contrast */
     height: 60vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
-    color: #FFD700; /* Gold for hero text */
+    color: #F0E68C; /* Brighter elegant gold for hero text */
     text-shadow: 0 2px 5px rgba(0, 0, 0, 0.7);
     padding: 0 20px;
 }
@@ -142,6 +162,8 @@ main {
     max-width: 1200px;
     margin: 0 auto;
     flex-grow: 1; /* Allows main content to expand and push footer down */
+    position: relative; /* Ensure it stays above the body::before overlay */
+    z-index: 1;
 }
 
 /* Category Blocks */
@@ -154,7 +176,7 @@ main {
 }
 
 .category-block {
-    background-color: #222; /* Darker grey for blocks */
+    background-color: rgba(34, 34, 34, 0.9); /* Slightly transparent for background to show */
     border: 1px solid #333; /* Subtle border */
     padding: 30px;
     flex: 1;
@@ -169,18 +191,18 @@ main {
 .category-block:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
-    border-color: #E0B973; /* Gold border on hover */
+    border-color: #D4AF37; /* Elegant Gold border on hover */
 }
 
 .category-block h2 {
     font-family: 'Playfair Display', serif;
     font-size: 2em;
-    color: #FFD700;
+    color: #F0E68C; /* Brighter elegant gold */
     margin-bottom: 10px;
 }
 
 .category-block p {
-    color: #E0B973;
+    color: #D4AF37; /* Elegant Gold */
     font-size: 1em;
 }
 
@@ -192,7 +214,7 @@ main {
 }
 
 .product-card {
-    background-color: #222;
+    background-color: rgba(34, 34, 34, 0.9); /* Slightly transparent */
     border: 1px solid #333;
     border-radius: 8px;
     overflow: hidden;
@@ -206,7 +228,7 @@ main {
 .product-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
-    border-color: #E0B973;
+    border-color: #D4AF37; /* Elegant Gold */
 }
 
 .product-card img {
@@ -228,13 +250,13 @@ main {
 .product-info h3 {
     font-family: 'Playfair Display', serif;
     font-size: 1.5em;
-    color: #FFD700;
+    color: #F0E68C; /* Brighter elegant gold */
     margin-top: 0;
     margin-bottom: 10px;
 }
 
 .product-info p {
-    color: #E0B973;
+    color: #D4AF37; /* Elegant Gold */
     font-size: 0.9em;
     margin-bottom: 15px;
     flex-grow: 1;
@@ -243,13 +265,13 @@ main {
 .product-price {
     font-family: 'Playfair Display', serif;
     font-size: 1.3em;
-    color: #FFD700;
+    color: #F0E68C; /* Brighter elegant gold */
     font-weight: 700;
     margin-top: auto; /* Pushes price to the bottom */
 }
 
 .add-to-cart-button {
-    background-color: #E0B973; /* Muted gold button */
+    background-color: #D4AF37; /* Elegant gold button */
     color: #000; /* Black text */
     border: none;
     padding: 12px 20px;
@@ -262,7 +284,7 @@ main {
 }
 
 .add-to-cart-button:hover {
-    background-color: #FFD700; /* Brighter gold on hover */
+    background-color: #F0E68C; /* Brighter elegant gold on hover */
     color: #000;
 }
 
@@ -276,7 +298,7 @@ main {
     width: 100%;
     height: 100%;
     overflow: auto;
-    background-color: rgba(0, 0, 0, 0.8); /* Darker overlay */
+    background-color: rgba(0, 0, 0, 0.85); /* Darker overlay for modals */
     justify-content: center; /* Center horizontally */
     align-items: center;   /* Center vertically */
     /* Only display: flex when modal is active via JS */
@@ -296,7 +318,7 @@ main {
     max-width: 600px;
     position: relative;
     box-shadow: 0 5px 25px rgba(0, 0, 0, 0.7);
-    color: #E0B973;
+    color: #D4AF37; /* Elegant Gold */
     transform: translateY(20px); /* Initial subtle animation position */
     opacity: 0; /* Initial hidden state for animation */
     transition: transform 0.3s ease-out, opacity 0.3s ease-out;
@@ -318,7 +340,7 @@ main {
 .modal-content h3 {
     font-family: 'Playfair Display', serif;
     font-size: 2em;
-    color: #FFD700;
+    color: #F0E68C; /* Brighter elegant gold */
     margin-bottom: 10px;
 }
 
@@ -330,14 +352,14 @@ main {
 .modal-price {
     font-family: 'Playfair Display', serif;
     font-size: 1.8em;
-    color: #FFD700;
+    color: #F0E68C; /* Brighter elegant gold */
     font-weight: 700;
     margin-top: 20px;
     margin-bottom: 20px;
 }
 
 .close-button {
-    color: #E0B973;
+    color: #D4AF37; /* Elegant Gold */
     position: absolute;
     top: 15px;
     right: 25px;
@@ -349,7 +371,7 @@ main {
 
 .close-button:hover,
 .close-button:focus {
-    color: #FFD700;
+    color: #F0E68C; /* Brighter elegant gold on hover */
     text-decoration: none;
     cursor: pointer;
 }
@@ -357,7 +379,7 @@ main {
 /* Cart Modal Specifics */
 #cartModal .modal-content h2 {
     font-family: 'Playfair Display', serif;
-    color: #FFD700;
+    color: #F0E68C; /* Brighter elegant gold */
     margin-bottom: 25px;
     text-align: center;
 }
@@ -387,13 +409,13 @@ main {
 .cart-item-info h4 {
     font-family: 'Playfair Display', serif;
     margin: 0;
-    color: #FFD700;
+    color: #F0E68C; /* Brighter elegant gold */
     font-size: 1.1em;
 }
 
 .cart-item-info p {
     margin: 5px 0 0;
-    color: #E0B973;
+    color: #D4AF37; /* Elegant Gold */
     font-size: 0.9em;
 }
 
@@ -403,7 +425,7 @@ main {
 }
 
 .cart-item-actions button {
-    background-color: #E0B973;
+    background-color: #D4AF37; /* Elegant Gold */
     color: #000;
     border: none;
     padding: 5px 10px;
@@ -415,11 +437,11 @@ main {
 }
 
 .cart-item-actions button:hover {
-    background-color: #FFD700;
+    background-color: #F0E68C; /* Brighter elegant gold on hover */
 }
 
 .cart-item-actions span {
-    color: #FFD700;
+    color: #F0E68C; /* Brighter elegant gold */
     font-weight: 600;
     margin: 0 5px;
 }
@@ -427,7 +449,7 @@ main {
 .cart-total {
     font-family: 'Playfair Display', serif;
     font-size: 1.5em;
-    color: #FFD700;
+    color: #F0E68C; /* Brighter elegant gold */
     text-align: right;
     margin-top: 20px;
     padding-top: 15px;
@@ -439,7 +461,7 @@ main {
     display: block;
     width: 100%;
     padding: 15px;
-    background-color: #FFD700; /* Brighter gold for primary actions */
+    background-color: #F0E68C; /* Brighter elegant gold for primary actions */
     color: #000;
     border: none;
     border-radius: 5px;
@@ -451,14 +473,14 @@ main {
 }
 
 .checkout-button:hover, .place-order-button:hover {
-    background-color: #E0B973; /* Muted gold on hover */
+    background-color: #D4AF37; /* Elegant gold on hover */
 }
 
 /* Checkout Modal Specifics */
 #checkoutForm label {
     display: block;
     margin-bottom: 8px;
-    color: #E0B973;
+    color: #D4AF37; /* Elegant Gold */
     font-weight: 600;
 }
 
@@ -472,31 +494,33 @@ main {
     border: 1px solid #333;
     border-radius: 5px;
     background-color: #000;
-    color: #E0B973;
+    color: #D4AF37; /* Elegant Gold */
     font-size: 1em;
 }
 
 #checkoutForm input:focus,
 #checkoutForm textarea:focus {
     outline: none;
-    border-color: #FFD700;
-    box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.3);
+    border-color: #F0E68C; /* Brighter elegant gold on focus */
+    box-shadow: 0 0 0 2px rgba(240, 230, 140, 0.3); /* Slightly brighter gold for shadow */
 }
 
 /* Footer Styling */
 footer {
     background-color: #000;
-    color: #E0B973;
+    color: #D4AF37; /* Elegant Gold */
     text-align: center;
     padding: 40px 20px;
     margin-top: auto; /* Push footer to the bottom */
     border-top: 1px solid #333;
+    position: relative; /* Ensure it stays above the body::before overlay */
+    z-index: 1;
 }
 
 .footer-content h3 {
     font-family: 'Playfair Display', serif;
     font-size: 2em;
-    color: #FFD700;
+    color: #F0E68C; /* Brighter elegant gold */
     margin-bottom: 15px;
 }
 
@@ -510,14 +534,14 @@ footer {
 }
 
 .social-links a {
-    color: #E0B973;
+    color: #D4AF37; /* Elegant Gold */
     font-size: 1.5em;
     margin: 0 12px;
     transition: color 0.3s ease;
 }
 
 .social-links a:hover {
-    color: #FFD700;
+    color: #F0E68C; /* Brighter elegant gold on hover */
 }
 
 /* Responsive Design */
